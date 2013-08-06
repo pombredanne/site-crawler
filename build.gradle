@@ -1,0 +1,51 @@
+apply plugin: 'scala'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+version = '1.0.0-SNAPSHOT'
+group = 'org.github.site.crawler'
+description = 'Site Crawler'
+
+ext {
+	scalaVersion = '2.9.2'
+	springVersion = '3.2.2.RELEASE'
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Site Crawler',
+		'Implementation-Version': version,
+		'Main-class': 'org.github.site.crawler.Launcher'
+	}
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+repositories {  
+	maven { url 'https://repo.springsource.org/libs-milestone' }
+	maven { url 'http://repo.springsource.org/milestone.' }
+	mavenCentral()  
+}
+
+dependencies {
+	//     Libraries needed for scala api
+	compile 'org.scala-lang:scala-library:' + scalaVersion
+
+	//Spring
+	compile "org.springframework.scala:spring-scala:1.0.0.M2"
+	
+	compile 'org.springframework:spring-core:3.2.2.RELEASE'
+	compile 'org.springframework:spring-context:3.2.2.RELEASE'
+	
+	compile 'com.typesafe.akka:akka-actor_2.10:2.2.0'
+	
+	//HTML parser
+	compile 'org.jsoup:jsoup:1.7.2'
+	
+}
