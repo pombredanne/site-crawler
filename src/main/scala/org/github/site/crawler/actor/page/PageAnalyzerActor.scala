@@ -11,7 +11,7 @@ import scala.collection.mutable.Queue
 class PageAnalyzerActor extends Actor with ActorLogging {
 	def receive = {
 		case PageAnalyzer(url, pageAnalyzers) => {
-			var page = Jsoup.parse(getClass().getResource("/abcroisiere.html").openStream(), "UTF-8", "http://www.abcroisiere.com")
+			var page = Jsoup.connect(url).get()
 			
 			var links = page.select("a[href]").iterator
 			var urls = new Queue[String]()
