@@ -3,12 +3,9 @@ package org.github.site.crawler.model.filter.url
 class RegexUrlFilter(var filterType: FilterType, val pattern: String) extends UrlFilter {
 
 	private val regexPattern = pattern.r
-
+	
 	override def matchURL(url: String): Boolean = {
-		url match {
-			case regexPattern(url) => true
-			case _ => false
-		}
+		regexPattern unapplySeq url isDefined
 	}
 	
 	def getFilterType() : FilterType = filterType

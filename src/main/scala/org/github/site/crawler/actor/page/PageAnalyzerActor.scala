@@ -7,11 +7,12 @@ import org.jsoup.nodes.Element
 import akka.actor.Actor
 import akka.actor.ActorLogging
 import scala.collection.mutable.Queue
+import org.github.site.crawler.actor.State
 
 class PageAnalyzerActor extends Actor with ActorLogging {
 	def receive = {
-		case PageAnalyzer(url, pageAnalyzers) => {
-			var page = Jsoup.connect(url).get()
+		case PageAnalyzer(url, from , pageAnalyzers) => {
+			var page = Jsoup.connect(url).userAgent("Mozilla/5.0 (compatible; HBot/1.0)").get()
 			
 			var links = page.select("a[href]").iterator
 			var urls = new Queue[String]()
@@ -23,7 +24,8 @@ class PageAnalyzerActor extends Actor with ActorLogging {
 			var result = new HashMap[String, String]()
 			result.put("test", "test")
 			
-			sender ! new PageResult(url, result, urls.toList)
+			sender ! PageResult(url, from, result, urls.toList)
 		}
+		case State.Done => context.stop(self)
 	}
 }

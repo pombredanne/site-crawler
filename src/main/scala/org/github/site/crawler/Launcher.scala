@@ -36,11 +36,11 @@ object Launcher extends App {
 	)
 	
 	var urlFilters = List(
-		new RegexUrlFilter(IncludeOnce, ".*/fr/croisieres/.*" )
+		new RegexUrlFilter(Include, ".*/fr/croisieres/.*" )
 	)
 	
 	var config = new CrawlerConfig(Stream.continually(Random.nextLong).take(keySize).toString, 
-			urlsToAnalyze, urlFilters, analyzers)
+			urlsToAnalyze, urlFilters, analyzers, 15)
 	
 	siteAnalyzerActor ! SiteAnalyzer(config)
 }
